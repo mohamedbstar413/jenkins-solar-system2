@@ -18,6 +18,13 @@ pipeline {
     }
 
     stages {
+        stage('debugging...'){
+            steps{
+                sh "echo $MONGO_INITDB_ROOT_USERNAME"
+                sh "echo $MONGO_INITDB_ROOT_PASSWORD"
+                sh "echo $MONGO_URL"
+            }
+        }
         stage('pull code') {
             steps {
                 git "${env.REPO_URL}"
