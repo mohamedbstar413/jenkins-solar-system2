@@ -4,8 +4,8 @@ pipeline {
         MONGO_URL = 'mongodb://admin:secret@my-mongo:27017/mydb?authSource=admin'
         MONGO_CREDS = credentials('mongodb')
 
-        MONGO_INITDB_ROOT_USERNAME = $MONGO_CREDS_USR
-        MONGO_INITDB_ROOT_PASSWORD = $MONGO_CREDS_PSW
+        MONGO_INITDB_ROOT_USERNAME = "$MONGO_CREDS_USR"
+        MONGO_INITDB_ROOT_PASSWORD = "$MONGO_CREDS_PSW"
 
         REPO_URL = 'https://github.com/mohamedbstar413/jenkins-solar-system2'
 
