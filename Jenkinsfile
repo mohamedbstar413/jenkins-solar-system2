@@ -21,7 +21,7 @@ tools{
 stages{
     stage('pull code'){
         steps{
-            git branch: 'main', url: "${env.REPO_URL}"
+            git "${env.REPO_URL}"
         }
     }
     stage('install dependencies'){
