@@ -18,13 +18,6 @@ pipeline {
     }
 
     stages {
-        stage('debugging...'){
-            steps{
-                sh "echo $MONGO_INITDB_ROOT_USERNAME"
-                sh "echo $MONGO_INITDB_ROOT_PASSWORD"
-                sh "echo $MONGO_URL"
-            }
-        }
         stage('pull code') {
             steps {
                 git "${env.REPO_URL}"
@@ -39,17 +32,19 @@ pipeline {
         stage('run tests') {
             steps {
                 sh 'echo testing...'
-                //sh 'npm test'
+            //sh 'npm test'
             }
         }
 
         stage('build, tag and push the image') {
             steps {
-                sh "echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --password-stdin"
-                sh 'docker build -t solar-image .'
-                sh 'docker tag solar-image bstar999/solar-image:latest'
-                sh 'docker push bstar999/solar-image:latest'
-                sh 'echo pushed image.'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                docker build -t $DOCKER_USER/solar-image:latest .
+                docker push $DOCKER_USER/solar-image:latest
+            '''
+                }
             }
         }
     }
