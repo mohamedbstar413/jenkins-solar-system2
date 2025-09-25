@@ -45,8 +45,8 @@ pipeline {
 
         stage('build, tag and push the image') {
             steps {
-                sh 'docker build -t solar-image .'
                 sh "echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --password-stdin"
+                sh 'docker build -t solar-image .'
                 sh 'docker tag solar-image bstar999/solar-image:latest'
                 sh 'docker push bstar999/solar-image:latest'
                 sh 'echo pushed image.'
