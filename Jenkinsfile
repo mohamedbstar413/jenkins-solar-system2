@@ -48,7 +48,7 @@ pipeline {
                 sh 'docker build -t solar-image'
                 sh "echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --password-stdin"
                 sh 'docker tag solar-image bstar999/solar-image:latest'
-                sh 'docker push solar-image'
+                sh 'docker push bstar999/solar-image:latest'
                 sh 'echo pushed image.'
             }
         }
