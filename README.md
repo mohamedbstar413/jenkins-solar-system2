@@ -1,49 +1,141 @@
-# Solar System NodeJS Application
+Solar System API
+A Node.js application for exploring solar system data, containerized with Docker and deployed via a Jenkins CI/CD pipeline.
+Table of Contents
 
-A simple HTML+MongoDB+NodeJS project to display Solar System and it's planets.
+Overview
+Prerequisites
+Project Structure
+Setup Instructions
+CI/CD Pipeline
+Environment Variables
+Running the Application
+Docker Image
+Contributing
+License
 
----
-## Requirements
+Overview
+This project is a Node.js-based API for accessing solar system data, stored in a MongoDB database. It is containerized using Docker and automated through a Jenkins pipeline for building, testing, and deploying to Docker Hub.
+Prerequisites
 
-For development, you will only need Node.js and NPM installed in your environement.
+Docker: To build and run the containerized application.
+Node.js: Version 18 (provided by the node:18-alpine3.17 Docker image).
+MongoDB: A running MongoDB instance for data storage.
+Jenkins: For CI/CD pipeline execution.
+Docker Hub Account: For pushing and pulling Docker images.
+Git: For cloning the repository.
 
-### Node
-- #### Node installation on Windows
+Project Structure
+├── Dockerfile          # Docker configuration for the Node.js app
+├── Jenkinsfile         # Jenkins pipeline for CI/CD
+├── package.json        # Node.js dependencies and scripts
+├── src/                # Source code for the application
+└── README.md           # Project documentation
 
-  Just go on [official Node.js website](https://nodejs.org/) and download the installer.
-Also, be sure to have `git` available in your PATH, `npm` might need it (You can find git [here](https://git-scm.com/)).
+Setup Instructions
 
-- #### Node installation on Ubuntu
+Clone the Repository:
+git clone https://github.com/mohamedbstar413/jenkins-solar-system2.git
+cd jenkins-solar-system2
 
-  You can install nodejs and npm easily with apt install, just run the following commands.
 
-      $ sudo apt install nodejs
-      $ sudo apt install npm
+Install Dependencies:Ensure Node.js is installed, then run:
+npm install
 
-- #### Other Operating Systems
-  You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
 
-If the installation was successful, you should be able to run the following command.
+Set Up MongoDB:
 
-    $ node --version
-    v8.11.3
+Ensure a MongoDB instance is running (e.g., via Docker: docker run -d -p 27017:27017 mongo).
+Configure credentials in your environment or CI/CD system.
 
-    $ npm --version
-    6.1.0
 
----
-## Install Dependencies from `package.json`
-    $ npm install
+Run Locally:
+npm start
 
-## Run Unit Testing
-    $ npm test
+The application will be available at http://localhost:3000.
 
-## Run Code Coverage
-    $ npm run coverage
 
-## Run Application
-    $ npm start
+CI/CD Pipeline
+The Jenkins pipeline automates the build, test, and deployment process. It includes the following stages:
 
-## Access Application on Browser
-    http://localhost:3000/
+Pull Code: Clones the repository from GitHub.
+Install Dependencies: Installs Node.js dependencies using npm install.
+Run Tests: Executes tests (currently a placeholder; replace with npm test for actual test scripts).
+Build, Tag, and Push Image:
+Builds a Docker image tagged as <DOCKER_USER>/solar-image:latest.
+Pushes the image to Docker Hub using provided credentials.
 
+
+
+Jenkins Setup
+
+Ensure the Jenkins server has the docker agent label.
+Configure credentials in Jenkins:
+mongodb: MongoDB username and password.
+dockerhub: Docker Hub username and password.
+
+
+Install the Node.js plugin in Jenkins and configure the node-js tool.
+
+Environment Variables
+The application and pipeline rely on the following environment variables:
+
+
+
+Variable
+Description
+
+
+
+MONGO_INITDB_ROOT_USERNAME
+MongoDB admin username (from Jenkins credentials)
+
+
+MONGO_INITDB_ROOT_PASSWORD
+MongoDB admin password (from Jenkins credentials)
+
+
+MONGO_URL
+MongoDB connection string
+
+
+REPO_URL
+GitHub repository URL
+
+
+DOCKER_CREDS
+Docker Hub credentials (username and password)
+
+
+Running the Application
+
+Using Docker:Pull the image from Docker Hub:
+docker pull <DOCKER_USER>/solar-image:latest
+
+Run the container:
+docker run -p 3000:3000 -e MONGO_URL=<your-mongo-url> <DOCKER_USER>/solar-image:latest
+
+
+Locally:Set the MONGO_URL environment variable and run:
+npm start
+
+
+
+Docker Image
+The Docker image is built from the node:18-alpine3.17 base image and exposes port 3000. The Dockerfile:
+
+Sets the working directory to /usr/app.
+Copies package.json and installs dependencies.
+Copies the application code.
+Runs npm start to launch the app.
+
+The image is available on Docker Hub as <DOCKER_USER>/solar-image:latest.
+Contributing
+
+Fork the repository.
+Create a feature branch (git checkout -b feature/your-feature).
+Commit your changes (git commit -m "Add your feature").
+Push to the branch (git push origin feature/your-feature).
+Open a pull request.
+
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
